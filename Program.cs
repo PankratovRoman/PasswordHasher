@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 
 
 namespace PasswordHasher
@@ -13,6 +12,12 @@ namespace PasswordHasher
             // для каждого символа из введенной строки подбираем символ из алфавита и далее =>
             foreach (char character in charsForEncrypt)
             {
+                //var index = Array.IndexOf(characters, character);
+                //if (index <= -1)
+                //    throw new Exception($"Character {character} doesn't exist in the alphabet");
+                //var encryptedPassw0rdChar = code.Substring(index * 3, 3);
+                //result += encryptedPassw0rdChar;
+
                 foreach (string alphabetChar in characters)
                 {
                     if (character == char.Parse(alphabetChar))
@@ -35,28 +40,23 @@ namespace PasswordHasher
             // сначала проверяем длину строки. Если при делениии по модулю остаток отличный от 0, тогда распознание не удастся, значит ошибка 
             if (charsForDecrypt.Length % 3 != 0)
             {
-                //______________________________________!!!!! воткни исключение/ также добавь проверку на несуществующие симворлы в алфавите при кодировании
-                return "Incorrect value";
+                throw new Exception("Incorrect value");
             }
-            else
+            // для каждого i+3-его элемента в массиве длиной меньше stringForDecrypt
+            for (int i = 0; i < charsForDecrypt.Length; i += 3)
             {
-                // для каждого i+3-его элемента в массиве длиной меньше stringForDecrypt
-                for (int i = 0; i < charsForDecrypt.Length; i += 3)
-                {
-                    // выделяем строку из 3 символов
-                    string element = charsForDecrypt.Substring(i, 3);
-                    // получаем индекс элемента в массиве
-                    var codeIndex = code.IndexOf(element);
-                    // если индекс больше чем -1
-                    if (codeIndex > -1)
-                    {
-                        // получаем из алфавита значение сомвола по индексу из зашифрованного кода и конкатенируем в результат
-                        var decoded = characters[codeIndex / 3];
-                        result += decoded;
-                    }
-                    else { Console.WriteLine("Incorrect value"); }
-                }
+                // выделяем строку из 3 символов
+                string element = charsForDecrypt.Substring(i, 3);
+                // получаем индекс элемента в массиве
+                var codeIndex = code.IndexOf(element);
+                // если значение не найдено (индекс меньше=-1)
+                if (codeIndex <= -1)
+                    throw new Exception($"Incorrect value [{element}]");
+                // получаем из алфавита значение сомвола по индексу из зашифрованного кода и конкатенируем в результат
+                var decoded = characters[codeIndex / 3];
+                result += decoded;
             }
+
             return result;
         }
 
@@ -71,36 +71,53 @@ namespace PasswordHasher
             while (true)
             {
                 Console.WriteLine("Choose option: for encryption type 0, fore decryption type 1");
-                string inputValue = Console.ReadLine();
-                if (inputValue == "exit") break;
-                string[] splitValue = inputValue.Split(" ");
-                switch (splitValue[0])
+                string inputValue = Console.ReadLine().Trim();
+                string[] splitValue = inputValue.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
+                try
                 {
-                    case "0":
-                        Console.WriteLine("Enter the password you want to encrypt: ");
-                        string passForEncrypt = Console.ReadLine();
-                        string resultEncrypt = Encryption(passForEncrypt, encryptedCharacters, encryptionCode);
-                        Console.WriteLine($"Encrypted value is: {resultEncrypt}");
-                        break;
-                    case "1":
-                        Console.WriteLine("Enter value to decrypt: ");
-                        string stringForDecrypt = Console.ReadLine();
-                        string resultDecrypt = Decryption(stringForDecrypt, encryptedCharacters, encryptionCode);
-                        Console.WriteLine($"Decrypted value is: {resultDecrypt}");
-                        break;
-                    case "-e":
-                        string resultEncryptWithParam = Encryption(splitValue[1], encryptedCharacters, encryptionCode);
-                        Console.WriteLine($"Encrypted value is: {resultEncryptWithParam}");
-                        break;
-                    case "-d":
-                        string resultDecryptWithParams = Decryption(splitValue[1], encryptedCharacters, encryptionCode);
-                        Console.WriteLine($"Decrypted value is: {resultDecryptWithParams}");
-                        break;
-                    default:
-                        Console.WriteLine($"[{splitValue[1]}] is not in command list");
-                        break;
+                    switch (splitValue[0])
+                    {
+                        case "0":
+                            Console.WriteLine("Enter the password you want to encrypt: ");
+                            string passForEncrypt = Console.ReadLine();
+                            string resultEncrypt = Encryption(passForEncrypt, encryptedCharacters, encryptionCode);
+                            Console.WriteLine($"Encrypted value is: {resultEncrypt}");
+                            break;
+                        case "1":
+                            Console.WriteLine("Enter value to decrypt: ");
+                            string stringForDecrypt = Console.ReadLine();
+                            string resultDecrypt = Decryption(stringForDecrypt, encryptedCharacters, encryptionCode);
+                            Console.WriteLine($"Decrypted value is: {resultDecrypt}");
+                            break;
+                        case "-e":
+                            if (splitValue.Length != 2)
+                                throw new Exception("Incorrect value. One parameter required for command -e");
+                            string resultEncryptWithParam = Encryption(splitValue[1], encryptedCharacters, encryptionCode);
+                            Console.WriteLine($"Encrypted value is: {resultEncryptWithParam}");
+                            break;
+                        case "-d":
+                            if (splitValue.Length != 2)
+                                throw new Exception("Incorrect value. One parameter required for command -d");
+                            string resultDecryptWithParams = Decryption(splitValue[1], encryptedCharacters, encryptionCode);
+                            Console.WriteLine($"Decrypted value is: {resultDecryptWithParams}");
+                            break;
+                        case "clear":
+                            Console.Clear();
+                            break;
+                        case "exit":
+                            return;
+                        default:
+                            Console.WriteLine($"[{splitValue[0]}] is not in command list");
+                            break;
+                    }
                 }
-                             
+                catch (Exception e)
+                {
+                    Console.WriteLine("Error: {0}", e.Message);
+                }
+
+
             }
         }
 
