@@ -100,27 +100,7 @@ namespace PasswordHasher
                         Console.WriteLine($"[{splitValue[1]}] is not in command list");
                         break;
                 }
-
-                //switch (option)
-                //{
-                //    case "0":
-                //        Console.WriteLine("Enter the password you want to encrypt: ");
-                //        string passForEncrypt = Console.ReadLine();
-                //        string resultEncrypt = Encryption(passForEncrypt, encryptedCharacters, encryptionCode);
-                //        Console.WriteLine($"Encrypted value is: {resultEncrypt}");
-                //        break;
-                //    case "1":
-                //        Console.WriteLine("Enter value to decrypt: ");
-                //        string stringForDecrypt = Console.ReadLine();
-                //        string resultDecrypt = Decryption(stringForDecrypt, encryptedCharacters, encryptionCode);
-                //        Console.WriteLine($"Decrypted value is: {resultDecrypt}");
-                //        break;
-                //    default:
-                //        Console.WriteLine($"[{option}] is not in command list");
-                //        break;
-                //}
-
-
+                             
             }
         }
 
