@@ -6,72 +6,55 @@ namespace equalizer
 {
     class Program
     {
-        static string ChosingOption()
+        // Шифрующий метод. Принимает в качестве параметров строку для шифровки, массив алфавита и шифр-строку
+        static string Encryption(string charsForEncrypt, string[] characters, string code)
         {
-            Console.WriteLine("Choose option: for encryption type 0, fore decryption type 1");
-            var option = Console.ReadLine();
-            switch (option)
-            {
-                case "0":
-                    return "0";
-                case "1":
-                    return "1";
-                case "exit":
-                    return "exit";
-                default:
-                    Console.WriteLine($"{option} is not in command list");
-                    return "";
-            }
-        }
-
-        static string Encryption(string[] characters, string code)
-        {
-            Console.WriteLine("Enter the password you want to encrypt: ");
-            string passForEncrypt = Console.ReadLine();
-            string result = "";
-
-            foreach (char character in passForEncrypt)
+             string result = "";
+            // для каждого символа из введенной строки подбираем символ из алфавита и далее =>
+            foreach (char character in charsForEncrypt)
             {
                 foreach (string alphabetChar in characters)
                 {
                     if (character == char.Parse(alphabetChar))
                     {
-                        // вычислячем индекс в массиве encryptedCharacters (наш алфавит по сути) в котором находится очередной символ
+                        // => вычислячем индекс в массиве encryptedCharacters (наш алфавит по сути) в котором находится очередной символ
                         var alphabetIndex = Array.IndexOf(characters, alphabetChar);
+                        // получаем зашифрованный символ путем вычисления его позиции в кодовой строке с прибавлением трех последующих символов из кодовой строки и конкатенируем в результат при каждой итеррации
                         var encryptedPassw0rdChar = code.Substring(alphabetIndex * 3, 3);
                         result += encryptedPassw0rdChar;
                     }
                 }
             }
             return result;
-
-
         }
 
-        static string Decryption(string[] characters, string code)
+        // Дешифрующий метод. Принимает в качестве параметров строку для дешифровки, массив алфавита и шифр-строку
+        static string Decryption(string charsForDecrypt, string[] characters, string code)
         {
-            Console.WriteLine("Enter value to decrypt: ");
-            string stringForDecrypt = Console.ReadLine();
             string result = "";
-
-            if (stringForDecrypt.Length % 3 != 0)
+            // сначала проверяем длину строки. Если при делениии по модулю остаток отличный от 0, тогда распознание не удастся, значит ошибка 
+            if (charsForDecrypt.Length % 3 != 0)
             {
-                return null;
-
+                //______________________________________!!!!! воткни исключение/ также добавь проверку на несуществующие симворлы в алфавите при кодировании
+                return "Incorrect value";
             }
             else
             {
-                for (int i = 0; i < stringForDecrypt.Length; i += 3)
+                // для каждого i+3-его элемента в массиве длиной меньше stringForDecrypt
+                for (int i = 0; i < charsForDecrypt.Length; i += 3)
                 {
-                    string element = stringForDecrypt.Substring(i, 3);
+                    // выделяем строку из 3 символов
+                    string element = charsForDecrypt.Substring(i, 3);
+                    // получаем индекс элемента в массиве
                     var codeIndex = code.IndexOf(element);
+                    // если индекс больше чем -1
                     if (codeIndex > -1)
                     {
+                        // получаем из алфавита значение сомвола по индексу из зашифрованного кода и конкатенируем в результат
                         var decoded = characters[codeIndex / 3];
                         result += decoded;
                     }
                     else { Console.WriteLine("Incorrect value"); }
-
                 }
             }
             return result;
@@ -87,28 +70,30 @@ namespace equalizer
 
             while (true)
             {
-                var chosedOption = ChosingOption();
-                if (chosedOption == "0")
+                Console.WriteLine("Choose option: for encryption type 0, fore decryption type 1");
+                var option = Console.ReadLine();
+                if (option == "exit") break;
+                switch (option)
                 {
-                    string result = Encryption(encryptedCharacters, encryptionCode);
-                    Console.WriteLine(result);
+                    case "0":
+                        Console.WriteLine("Enter the password you want to encrypt: ");
+                        string passForEncrypt = Console.ReadLine();
+                        string resultEncrypt = Encryption(passForEncrypt, encryptedCharacters, encryptionCode);
+                        Console.WriteLine($"Encrypted value is: {resultEncrypt}");
+                        continue;
+                    case "1":
+                        Console.WriteLine("Enter value to decrypt: ");
+                        string stringForDecrypt = Console.ReadLine();
+                        string resultDecrypt = Decryption(stringForDecrypt, encryptedCharacters, encryptionCode);
+                        Console.WriteLine($"Decrypted value is: {resultDecrypt}");
+                        continue;
+                    default:
+                        Console.WriteLine($"[{option}] is not in command list");
+                        continue;
                 }
-                else if (chosedOption == "1")
-                {
-                    string result = Decryption(encryptedCharacters, encryptionCode);
-                    Console.WriteLine(result);
-                }
-                else if (chosedOption == "exit")
-                {
-                    break;
-                }
-                else
-                {
-                    continue;
-                }
+
+               
             }
-
-
         }
 
     }
