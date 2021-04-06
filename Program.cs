@@ -2,14 +2,14 @@
 using System.Threading;
 
 
-namespace equalizer
+namespace PasswordHasher
 {
     class Program
     {
         // Шифрующий метод. Принимает в качестве параметров строку для шифровки, массив алфавита и шифр-строку
         static string Encryption(string charsForEncrypt, string[] characters, string code)
         {
-             string result = "";
+            string result = "";
             // для каждого символа из введенной строки подбираем символ из алфавита и далее =>
             foreach (char character in charsForEncrypt)
             {
@@ -71,28 +71,56 @@ namespace equalizer
             while (true)
             {
                 Console.WriteLine("Choose option: for encryption type 0, fore decryption type 1");
-                var option = Console.ReadLine();
-                if (option == "exit") break;
-                switch (option)
+                string inputValue = Console.ReadLine();
+                if (inputValue == "exit") break;
+                string[] splitValue = inputValue.Split(" ");
+                switch (splitValue[0])
                 {
                     case "0":
                         Console.WriteLine("Enter the password you want to encrypt: ");
                         string passForEncrypt = Console.ReadLine();
                         string resultEncrypt = Encryption(passForEncrypt, encryptedCharacters, encryptionCode);
                         Console.WriteLine($"Encrypted value is: {resultEncrypt}");
-                        continue;
+                        break;
                     case "1":
                         Console.WriteLine("Enter value to decrypt: ");
                         string stringForDecrypt = Console.ReadLine();
                         string resultDecrypt = Decryption(stringForDecrypt, encryptedCharacters, encryptionCode);
                         Console.WriteLine($"Decrypted value is: {resultDecrypt}");
-                        continue;
+                        break;
+                    case "-e":
+                        string resultEncryptWithParam = Encryption(splitValue[1], encryptedCharacters, encryptionCode);
+                        Console.WriteLine($"Encrypted value is: {resultEncryptWithParam}");
+                        break;
+                    case "-d":
+                        string resultDecryptWithParams = Decryption(splitValue[1], encryptedCharacters, encryptionCode);
+                        Console.WriteLine($"Decrypted value is: {resultDecryptWithParams}");
+                        break;
                     default:
-                        Console.WriteLine($"[{option}] is not in command list");
-                        continue;
+                        Console.WriteLine($"[{splitValue[1]}] is not in command list");
+                        break;
                 }
 
-               
+                //switch (option)
+                //{
+                //    case "0":
+                //        Console.WriteLine("Enter the password you want to encrypt: ");
+                //        string passForEncrypt = Console.ReadLine();
+                //        string resultEncrypt = Encryption(passForEncrypt, encryptedCharacters, encryptionCode);
+                //        Console.WriteLine($"Encrypted value is: {resultEncrypt}");
+                //        break;
+                //    case "1":
+                //        Console.WriteLine("Enter value to decrypt: ");
+                //        string stringForDecrypt = Console.ReadLine();
+                //        string resultDecrypt = Decryption(stringForDecrypt, encryptedCharacters, encryptionCode);
+                //        Console.WriteLine($"Decrypted value is: {resultDecrypt}");
+                //        break;
+                //    default:
+                //        Console.WriteLine($"[{option}] is not in command list");
+                //        break;
+                //}
+
+
             }
         }
 
