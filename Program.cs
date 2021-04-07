@@ -12,23 +12,26 @@ namespace PasswordHasher
             // для каждого символа из введенной строки подбираем символ из алфавита и далее =>
             foreach (char character in charsForEncrypt)
             {
-                //var index = Array.IndexOf(characters, character);
-                //if (index <= -1)
-                //    throw new Exception($"Character {character} doesn't exist in the alphabet");
-                //var encryptedPassw0rdChar = code.Substring(index * 3, 3);
-                //result += encryptedPassw0rdChar;
+                var index = Array.IndexOf(characters, character.ToString());
+                if (index <= -1)
+                    throw new Exception($"Character {character} doesn't exist in the alphabet");
+                var encryptedPassw0rdChar = code.Substring(index * 3, 3);
+                result += encryptedPassw0rdChar;
 
-                foreach (string alphabetChar in characters)
-                {
-                    if (character == char.Parse(alphabetChar))
-                    {
-                        // => вычислячем индекс в массиве encryptedCharacters (наш алфавит по сути) в котором находится очередной символ
-                        var alphabetIndex = Array.IndexOf(characters, alphabetChar);
-                        // получаем зашифрованный символ путем вычисления его позиции в кодовой строке с прибавлением трех последующих символов из кодовой строки и конкатенируем в результат при каждой итеррации
-                        var encryptedPassw0rdChar = code.Substring(alphabetIndex * 3, 3);
-                        result += encryptedPassw0rdChar;
-                    }
-                }
+                //foreach (string alphabetChar in characters)
+                //{
+                   
+
+                //    if (character == char.Parse(alphabetChar))
+                //    {
+                //        // => вычислячем индекс в массиве encryptedCharacters (наш алфавит по сути) в котором находится очередной символ
+                //        var alphabetIndex = Array.IndexOf(characters, alphabetChar);
+                //        // получаем зашифрованный символ путем вычисления его позиции в кодовой строке с прибавлением трех последующих символов из кодовой строки и конкатенируем в результат при каждой итеррации
+                //        var encryptedPassw0rdChar = code.Substring(alphabetIndex * 3, 3);
+                //        result += encryptedPassw0rdChar;
+                //    }
+
+                //}
             }
             return result;
         }
