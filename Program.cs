@@ -54,7 +54,7 @@ namespace PasswordHasher
                 "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
                 "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "/", "!", "@", "#", "$", "%",
                 ":", ";", "&", "?", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0" };
-            string encryptionCode = @"PX8@\;R9n1=XjJa|))JR|jeFEi-j@f-8AL#z;#)gFT-PxH[aFuO95uO0z;.B=A&wKFM%j9Uvpok)-+=lNJ!$%>v.#fS\yiior*($#28r*$U*($#UR$34131ewWewW+*/+wq-Uc?N5{K93^#:[wW8gU<cSXv%q&KzGP\@GzM]WB`uF\6}2JpXt(Y4x@s_Bx$pyU%Ka[Hjg];%8sC\Z#S<4EEd";
+            string encryptionCode = @"PX8@\;R9n1=XjJa|))JR|jeFEi-j@f-8AL#z;#)gFT-PxH[aFuO95uO0z;.B=A&wKFM%j9Uvpok)-+=lNJ!$%>v.#fS\yiior*(_#28r*$U*($#UR$34131ewWewW+*/+wq-Uc?N5{K93^#:[wW8gU<cSXv%q&KzGP\@GzM]WB`uF\6}2JpXt(Y4x@s_Bx$pyU%Ka[Hjg];%8sC\Z#S<4EEd";
 
             while (true)
             {
